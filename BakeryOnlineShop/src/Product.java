@@ -11,10 +11,10 @@
  */
 public class Product {
     private String name;
-    private String amount;
+    private int amount;
     private double price;
 
-    public Product(String name, String amount, double price) {
+    public Product(String name, int amount, double price) {
         this.name = name;
         this.amount = amount;
         this.price = price;
@@ -24,7 +24,7 @@ public class Product {
         return name;
     }
 
-    public String getAmount() {
+    public int getAmount() {
         return amount;
     }
 

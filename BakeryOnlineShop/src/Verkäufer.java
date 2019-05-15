@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Verkäufer {
     private String name;
+    Product p;
     private ArrayList<Product> list = new ArrayList<>();
 
     public Verkäufer(String name) {
@@ -22,9 +23,14 @@ public class Verkäufer {
     public String getName() {
         return name;
     }
-
-    public ArrayList<Product> getList() {
-        return list;
+    
+    public String toString(){
+        return name;
+    }
+    
+    public void setList(Product p) {
+        this.p=p;
+        this.list.add(p);
     }
     
     

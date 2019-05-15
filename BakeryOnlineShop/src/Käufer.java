@@ -15,10 +15,14 @@ public class Käufer {
     String name;
     ArrayList<Product> productList = new ArrayList<>();
 
-    public Käufer(String name,ArrayList productList) {
+    public Käufer(String name) {
         this.name = name;
-        this.productList=productList;
     }
+    
+    public String toString(){
+        return name;
+    }
+    
     
     
     

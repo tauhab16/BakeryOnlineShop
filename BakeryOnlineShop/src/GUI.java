@@ -1,3 +1,9 @@
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,11 +16,18 @@
  */
 public class GUI extends javax.swing.JFrame {
 
+VList vL = new VList();
+KList kL = new KList();
+Verkäufer v= null;
+Käufer k = null;
+BL b ;
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
+        kList.setModel(kL);
+        vList.setModel(vL);
     }
 
     /**
@@ -32,6 +45,8 @@ public class GUI extends javax.swing.JFrame {
         vList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         kList = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,6 +68,20 @@ public class GUI extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(kList);
 
+        jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -63,14 +92,16 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btEX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btCLEAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(154, 154, 154))))
+                        .addGap(49, 49, 49)
+                        .addComponent(jButton2)))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,7 +111,10 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane1))
                 .addGap(10, 10, 10)
-                .addComponent(btEX)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btEX)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btCLEAR)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -90,12 +124,44 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEXActionPerformed
-        // TODO add your handling code here:
+      try{
+        k=kL.getElementAt(kList.getSelectedIndex());
+        v=vL.getElementAt(vList.getSelectedIndex());    
+      }
+      catch(Exception ex){
+          if(k==null){
+             JOptionPane.showMessageDialog(null,"Please select Seller","Warning",JOptionPane.WARNING_MESSAGE);
+          }
+          if(v==null){
+             JOptionPane.showMessageDialog(null,"Please select Customer","Warning",JOptionPane.WARNING_MESSAGE);
+          }
+          else{
+              JOptionPane.showMessageDialog(null,"Something went horribly wrong.For fixing it, contact +43 664 1989856","Warning",JOptionPane.WARNING_MESSAGE);
+          }
+      }
+    try {
+        b= new BL(v,k);
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+    }
+      
+      
+      
     }//GEN-LAST:event_btEXActionPerformed
 
     private void btCLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCLEARActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btCLEARActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       vL.add(new Verkäufer("Billy"));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        kL.add(new Käufer("Bobby"));
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,6 +201,8 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCLEAR;
     private javax.swing.JButton btEX;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> kList;
