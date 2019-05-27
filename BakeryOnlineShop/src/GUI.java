@@ -15,17 +15,30 @@ import javax.swing.JOptionPane;
  * @author User
  */
 public class GUI extends javax.swing.JFrame {
-
+/*Die GUI erfüllt ihren Zweck darin, dass sie dem User ein Interface bietet, 
+  wo er Verkäufer und Käufer auswählen und oder hinzufügen kann.
+    */
 VList vL = new VList();
 KList kL = new KList();
 Verkäufer v= null;
 Käufer k = null;
 BL b ;
-    /**
+/*VList und KList stellen die Listen aller Verkäufer bzw. Käufer dar, worin
+sie gespeichert werden um dann später auf der GUI sichtbar zu sein.
+
+Die Objekte Verkäufer und Käufer werden mit dem Start des Programmes belegt und werden durch
+eine Auswahl auf der Liste belegt
+
+Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren Verlauf der Speicherung der KäuferListe*/
+   
+
+/**
      * Creates new form GUI
      */
     public GUI() {
+        
         initComponents();
+        //Hier werden die oben generierten ListModels den jeweiligen Listen auf der GUI zugewiesen
         kList.setModel(kL);
         vList.setModel(vL);
     }
@@ -124,7 +137,15 @@ BL b ;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEXActionPerformed
-      try{
+      /*
+        Als erstes wird der jeweilige Verkäufer und Käufer von der GUI-Liste geholt.
+        Darauf folgt eine Überprüfung ob die Auswahl korrekt verlief, oder ob ein anderer Fehler aufgetreten ist, wodurch
+        man sich dann an eine "spezielle" Hotline wenden soll.    
+        
+        Gleich unterhalb des catch-Blockes wird das BL-Objekt initalisiert, wobei Verkäufer und Käufer übergeben wird, und die von der
+        BL-Klasse geworfenen Exceptions gefangen werden.
+        */
+        try{
         k=kL.getElementAt(kList.getSelectedIndex());
         v=vL.getElementAt(vList.getSelectedIndex());    
       }
@@ -140,17 +161,23 @@ BL b ;
           }
       }
     try {
-        b= new BL(v,k);
+        b= new BL();
+        b.generateTable();
+        b.load(v,k);
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
+        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (Exception ex) {
         Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
     }
       
       
       
     }//GEN-LAST:event_btEXActionPerformed
-
+/*
+Die Buttons dienen zur Deselektierung der Auswahl sowie zum Adden des Käufers und Verkäufers
+    */
     private void btCLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCLEARActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btCLEARActionPerformed

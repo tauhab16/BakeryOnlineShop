@@ -12,6 +12,12 @@ import java.util.ArrayList;
  * @author User
  */
 public class Käufer {
+    /*
+       Der Käufer braucht nicht mehr als einen Namen und eine Liste in der er die Produkte später speichert.
+       Die Liste ist bereits erstellt, der Name wird noch festgelegt (durch ADD in der GUI)
+       
+       Die Liste kann returnt, werden um zB gespeichert zu werden.
+    */
     String name;
     ArrayList<Product> productList = new ArrayList<>();
 
@@ -22,6 +28,18 @@ public class Käufer {
     public String toString(){
         return name;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void add(Product p){
+        productList.add(p);
+    }
+    public ArrayList<Product> getProductList() {
+        return productList;
+    }
+    
     
     
     

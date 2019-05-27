@@ -12,6 +12,11 @@ import java.util.ArrayList;
  * @author User
  */
 public class Verkäufer {
+    /*
+     Der Verkäufer hat einen Namen, sowie eine Liste, welche durch Load in der BL belegt wird, um die Produkte zu speichern
+    um sie dann später hochzuladen.
+    
+    */
     private String name;
     Product p;
     private ArrayList<Product> list = new ArrayList<>();
@@ -32,6 +37,15 @@ public class Verkäufer {
         this.p=p;
         this.list.add(p);
     }
+
+    public Product getP() {
+        return p;
+    }
+
+    public ArrayList<Product> getList() {
+        return list;
+    }
+    
     
     
 }

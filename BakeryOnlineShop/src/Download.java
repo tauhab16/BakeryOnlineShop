@@ -1,3 +1,6 @@
+
+import java.sql.Connection;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,12 +13,16 @@
  */
 public class Download implements Runnable{
 Product p;
+Connection con;
 public Download(Product p){
     this.p=p;
 }
     @Override
     public void run() {
-
+        
+        synchronized(p){
+            
+        }
     }
     
 }
