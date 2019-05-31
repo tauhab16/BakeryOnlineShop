@@ -1,4 +1,7 @@
 
+import java.io.Serializable;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,12 +12,13 @@
  *
  * @author User
  */
-public class Product {
+public class Product implements Serializable{
     private String name;
-    private int amount;
+    private int amount,id;
     private double price;
 
-    public Product(String name, int amount, double price) {
+    public Product(int id,String name, int amount, double price) {
+        this.id=id;
         this.name = name;
         this.amount = amount;
         this.price = price;
@@ -31,6 +35,8 @@ public class Product {
     public double getPrice() {
         return price;
     }
-    
+    public int getId(){
+        return id;
+    }
     
 }

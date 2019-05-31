@@ -1,7 +1,13 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /*
@@ -9,38 +15,42 @@ import javax.swing.JOptionPane;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author User
  */
 public class GUI extends javax.swing.JFrame {
-/*Die GUI erfüllt ihren Zweck darin, dass sie dem User ein Interface bietet, 
+
+    /*Die GUI erfüllt ihren Zweck darin, dass sie dem User ein Interface bietet, 
   wo er Verkäufer und Käufer auswählen und oder hinzufügen kann.
-    */
-VList vL = new VList();
-KList kL = new KList();
-Verkäufer v= null;
-Käufer k = null;
-BL b ;
-/*VList und KList stellen die Listen aller Verkäufer bzw. Käufer dar, worin
-sie gespeichert werden um dann später auf der GUI sichtbar zu sein.
+     */
+    VList vL = new VList();
+    KList kL = new KList();
+    Verkäufer v = null;
+    Käufer k = null;
+    BL b;
 
-Die Objekte Verkäufer und Käufer werden mit dem Start des Programmes belegt und werden durch
-eine Auswahl auf der Liste belegt
-
-Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren Verlauf der Speicherung der KäuferListe*/
-   
-
-/**
-     * Creates new form GUI
+    /**
+     * VList und KList stellen die Listen aller Verkäufer bzw. Käufer dar, worin
+     * sie gespeichert werden um dann später auf der GUI sichtbar zu sein.
+     *
+     * Die Objekte Verkäufer und Käufer werden mit dem Start des Programmes
+     * belegt und werden durch eine Auswahl auf der Liste belegt
+     *
+     * Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren
+     * Verlauf der Speicherung der KäuferListe
      */
     public GUI() {
+       
+            
+
+            initComponents();
+            //Hier werden die oben generierten ListModels den jeweiligen Listen auf der GUI zugewiesen
+            kList.setModel(kL);
+            vList.setModel(vL);
+            vL.add(new Verkäufer("Billy"));
+            kL.add(new Käufer("Bob"));
         
-        initComponents();
-        //Hier werden die oben generierten ListModels den jeweiligen Listen auf der GUI zugewiesen
-        kList.setModel(kL);
-        vList.setModel(vL);
     }
 
     /**
@@ -58,8 +68,10 @@ Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren Verla
         vList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         kList = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        addV = new javax.swing.JButton();
+        addK = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,19 +93,23 @@ Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren Verla
 
         jScrollPane2.setViewportView(kList);
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addV.setText("Add");
+        addV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addVActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addK.setText("Add");
+        addK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addKActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Verkäufer");
+
+        jLabel2.setText("Käufer");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,92 +119,108 @@ Die BL kümmert sich dann um Belegung der VerkäuferListe und im späteren Verla
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btEX)
+                                    .addComponent(btCLEAR, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btEX, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btCLEAR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(49, 49, 49)
-                        .addComponent(jButton2)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addV)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
+                        .addComponent(addK)))
                 .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btEX)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btCLEAR)))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btEX)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btCLEAR)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addV)
+                    .addComponent(addK))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEXActionPerformed
-      /*
-        Als erstes wird der jeweilige Verkäufer und Käufer von der GUI-Liste geholt.
-        Darauf folgt eine Überprüfung ob die Auswahl korrekt verlief, oder ob ein anderer Fehler aufgetreten ist, wodurch
-        man sich dann an eine "spezielle" Hotline wenden soll.    
-        
-        Gleich unterhalb des catch-Blockes wird das BL-Objekt initalisiert, wobei Verkäufer und Käufer übergeben wird, und die von der
-        BL-Klasse geworfenen Exceptions gefangen werden.
-        */
-        try{
-        k=kL.getElementAt(kList.getSelectedIndex());
-        v=vL.getElementAt(vList.getSelectedIndex());    
-      }
-      catch(Exception ex){
-          if(k==null){
-             JOptionPane.showMessageDialog(null,"Please select Seller","Warning",JOptionPane.WARNING_MESSAGE);
-          }
-          if(v==null){
-             JOptionPane.showMessageDialog(null,"Please select Customer","Warning",JOptionPane.WARNING_MESSAGE);
-          }
-          else{
-              JOptionPane.showMessageDialog(null,"Something went horribly wrong.For fixing it, contact +43 664 1989856","Warning",JOptionPane.WARNING_MESSAGE);
-          }
-      }
-    try {
-        b= new BL();
-        b.generateTable();
-        b.load(v,k);
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (Exception ex) {
-        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-    }
-      
-      
-      
+        /**
+         *
+         * Als erstes wird der jeweilige Verkäufer und Käufer von der GUI-Liste
+         * geholt. Darauf folgt eine Überprüfung ob die Auswahl korrekt verlief,
+         * oder ob ein anderer Fehler aufgetreten ist, wodurch man sich dann an
+         * eine "spezielle" Hotline wenden soll. * Gleich unterhalb des
+         * catch-Blockes wird das BL-Objekt initalisiert, wobei Verkäufer und
+         * Käufer übergeben wird, und die von der BL-Klasse geworfenen
+         * Exceptions gefangen werden.
+         */
+        try {
+            k = kL.getElementAt(kList.getSelectedIndex());
+            v = vL.getElementAt(vList.getSelectedIndex());
+        } catch (Exception ex) {
+            if (k == null) {
+                JOptionPane.showMessageDialog(null, "Please select Seller", "Hey!", JOptionPane.WARNING_MESSAGE);
+            }
+            if (v == null) {
+                JOptionPane.showMessageDialog(null, "Please select Customer", "Hey!", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Something went horribly wrong.For fixing it, contact +43 664 1989856", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        if (k != null && v != null) {
+
+            try {
+                this.b = new BL();
+                b.createDatabase();
+                b.generateTable();
+                b.load(v, k);
+                b.start();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }//GEN-LAST:event_btEXActionPerformed
-/*
-Die Buttons dienen zur Deselektierung der Auswahl sowie zum Adden des Käufers und Verkäufers
-    */
+    /**
+     * Die Buttons dienen zur Deselektierung der Auswahl sowie zum Adden des
+     * Käufers und Verkäufers
+     *
+     */
     private void btCLEARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCLEARActionPerformed
-        // TODO add your handling code here:
+        vList.clearSelection();
+        kList.clearSelection();
     }//GEN-LAST:event_btCLEARActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       vL.add(new Verkäufer("Billy"));
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void addVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        kL.add(new Käufer("Bobby"));
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_addVActionPerformed
+
+    private void addKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addKActionPerformed
+
+    }//GEN-LAST:event_addKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -204,16 +236,24 @@ Die Buttons dienen zur Deselektierung der Auswahl sowie zum Adden des Käufers u
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -226,10 +266,12 @@ Die Buttons dienen zur Deselektierung der Auswahl sowie zum Adden des Käufers u
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addK;
+    private javax.swing.JButton addV;
     private javax.swing.JButton btCLEAR;
     private javax.swing.JButton btEX;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> kList;

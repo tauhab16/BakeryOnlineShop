@@ -14,8 +14,7 @@ import java.util.ArrayList;
 public class Verkäufer {
     /*
      Der Verkäufer hat einen Namen, sowie eine Liste, welche durch Load in der BL belegt wird, um die Produkte zu speichern
-    um sie dann später hochzuladen.
-    
+     um sie dann später hochzuladen.
     */
     private String name;
     Product p;
